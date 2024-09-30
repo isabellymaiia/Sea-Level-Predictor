@@ -7,16 +7,20 @@ def draw_plot():
     df = pd.read_csv('epa-sea-level.csv')
 
     # 2. Criar gráfico de dispersão
+    # Cria um gráfico de dispersão usando o ano no eixo X e o nível do mar ajustado da CSIRO no eixo Y.
+    # Como o nível do mar tem mudado ao longo do tempo.
     plt.figure(figsize=(10, 6))
     plt.scatter(df['Year'], df['CSIRO Adjusted Sea Level'], color='blue', label='Dados')
 
     # 3. Criar a primeira linha de melhor ajuste
+    # Ela fornece uma representação matemática da relação entre o ano e o nível do mar, permitindo prever como o nível do mar pode mudar no futuro.
     slope, intercept, r_value, p_value, std_err = linregress(df['Year'], df['CSIRO Adjusted Sea Level'])
     years_extended = pd.Series(range(1880, 2051))  # Estender os anos até 2050
     sea_level_fit = slope * years_extended + intercept
     plt.plot(years_extended, sea_level_fit, color='red', label='Linha de Melhor Ajuste (1880-2050)')
 
     # 4. Criar a segunda linha de melhor ajuste (apenas a partir de 2000)
+    # Analisar os dados a partir de 2000 pode revelar tendências mais recentes 
     df_2000 = df[df['Year'] >= 2000]
     slope_2000, intercept_2000, r_value_2000, p_value_2000, std_err_2000 = linregress(df_2000['Year'], df_2000['CSIRO Adjusted Sea Level'])
     
